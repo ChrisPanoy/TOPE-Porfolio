@@ -24,6 +24,18 @@
             font-family: 'JetBrains Mono', monospace;
             color: #00f2ff;
         }
+
+        /* Mobile Color Trigger Fix */
+        .group:active img, .group:focus img {
+            filter: grayscale(0) brightness(1) !important;
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 640px) {
+            .glow-text {
+                font-size: clamp(2rem, 10vw, 4rem) !important;
+            }
+        }
     </style>
 </head>
 
@@ -114,10 +126,10 @@
             </header>
 
             <!-- Workspace Area -->
-            <div id="workspace" class="flex-1 p-12 relative">
+            <div id="workspace" class="flex-1 p-4 sm:p-8 md:p-12 relative">
 
                 <!-- SECTION: HOME -->
-                <section data-id="home" class="window absolute inset-12 active">
+                <section data-id="home" class="window absolute inset-4 sm:inset-8 md:inset-12 active">
                     <div class="window-header">
                         <div class="flex gap-2">
                             <div class="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
@@ -132,8 +144,8 @@
                             <span
                                 class="mono text-sys-cyan text-xs mb-6 block tracking-[0.3em] stagger-item">INITIATING_SEQUENCE_2.0</span>
                             <h1
-                                class="text-5xl md:text-8xl font-black text-white leading-none tracking-tighter mb-8 glow-text uppercase stagger-item">
-                                CHRISYSTEMATIXX
+                                class="text-4xl sm:text-6xl md:text-8xl font-black text-white leading-none tracking-tighter mb-8 glow-text uppercase stagger-item">
+                                CHRISYSTEMATIX
                             </h1>
                             <p
                                 class="text-lg md:text-xl text-slate-400 mono mb-12 border-l border-sys-cyan/20 pl-8 text-left italic stagger-item">
@@ -153,7 +165,7 @@
                     </div>
                 </section>
 
-                <section data-id="about" class="window absolute inset-12">
+                <section data-id="about" class="window absolute inset-4 sm:inset-8 md:inset-12">
                     <div class="window-header">
                         <div class="flex gap-2">
                             <div class="w-2.5 h-2.5 rounded-full border border-sys-cyan/40 bg-sys-cyan/20"></div>
@@ -319,7 +331,7 @@
                 </section>
 
                 <!-- SECTION: PROJECT -->
-                <section data-id="project" class="window absolute inset-12">
+                <section data-id="project" class="window absolute inset-4 sm:inset-8 md:inset-12">
                     <div class="window-header">
                         <div class="flex gap-2">
                             <div class="w-2.5 h-2.5 rounded-full border border-white/20"></div>
@@ -562,7 +574,7 @@
                 </section>
 
                 <!-- SECTION: CERTIFICATES -->
-                <section data-id="certificates" class="window absolute inset-12">
+                <section data-id="certificates" class="window absolute inset-4 sm:inset-8 md:inset-12">
                     <div class="window-header">
                         <div class="flex gap-2">
                             <div class="w-2.5 h-2.5 rounded-full border border-sys-cyan/40 bg-sys-cyan/20"></div>
@@ -585,7 +597,7 @@
                             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                                 <!-- Capstone Project -->
                                 <div class="group border border-white/5 bg-white/[0.01] p-6 flex flex-col items-center justify-center transition-all hover:border-sys-cyan/30 hover:bg-sys-cyan/[0.02] relative overflow-hidden stagger-item cursor-pointer"
-                                    onclick="openCertificateViewer('Capstone Project', ['/cap1.jpg', '/cap2.jpg', '/cap3.jpg'])">
+                                    onclick="openCertificateViewer('Capstone Project', ['./cap1.jpg', './cap2.jpg', './cap3.jpg'])">
                                     <div
                                         class="absolute top-0 right-0 w-8 h-8 bg-sys-cyan/5 rotate-45 translate-x-4 -translate-y-4 transition-transform group-hover:bg-sys-cyan/10">
                                     </div>
@@ -608,7 +620,7 @@
 
                                 <!-- Cloudstaff -->
                                 <div class="group border border-white/5 bg-white/[0.01] p-6 flex flex-col items-center justify-center transition-all hover:border-sys-cyan/30 hover:bg-sys-cyan/[0.02] relative overflow-hidden stagger-item cursor-pointer"
-                                    onclick="openCertificateViewer('Cloudstaff', ['/cl1.jpg', '/cl2.jpg'])">
+                                    onclick="openCertificateViewer('Cloudstaff', ['./cl1.jpg', './cl2.jpg'])">
                                     <div
                                         class="absolute top-0 right-0 w-8 h-8 bg-sys-cyan/5 rotate-45 translate-x-4 -translate-y-4 transition-transform group-hover:bg-sys-cyan/10">
                                     </div>
@@ -630,7 +642,7 @@
 
                                 <!-- Seminar -->
                                 <div class="group border border-white/5 bg-white/[0.01] p-6 flex flex-col items-center justify-center transition-all hover:border-sys-cyan/30 hover:bg-sys-cyan/[0.02] relative overflow-hidden stagger-item cursor-pointer"
-                                    onclick="openCertificateViewer('Seminar', ['/src1.jpg', '/src2.jpg'])">
+                                    onclick="openCertificateViewer('Seminar', ['./src1.jpg', './src2.jpg'])">
                                     <div
                                         class="absolute top-0 right-0 w-8 h-8 bg-sys-cyan/5 rotate-45 translate-x-4 -translate-y-4 transition-transform group-hover:bg-sys-cyan/10">
                                     </div>
@@ -652,7 +664,7 @@
 
                                 <!-- PSITE Central Luzon -->
                                 <div class="group border border-white/5 bg-white/[0.01] p-6 flex flex-col items-center justify-center transition-all hover:border-sys-cyan/30 hover:bg-sys-cyan/[0.02] relative overflow-hidden stagger-item cursor-pointer"
-                                    onclick="openCertificateViewer('PSITE Central Luzon', ['/psite1.jpg'])">
+                                    onclick="openCertificateViewer('PSITE Central Luzon', ['./psite1.jpg'])">
                                     <div
                                         class="absolute top-0 right-0 w-8 h-8 bg-sys-cyan/5 rotate-45 translate-x-4 -translate-y-4 transition-transform group-hover:bg-sys-cyan/10">
                                     </div>
@@ -675,7 +687,7 @@
 
                                 <!-- Credly(NET ACAD) -->
                                 <div class="group border border-white/5 bg-white/[0.01] p-6 flex flex-col items-center justify-center transition-all hover:border-sys-cyan/30 hover:bg-sys-cyan/[0.02] relative overflow-hidden stagger-item cursor-pointer"
-                                    onclick="openCertificateViewer('Credly(NET ACAD)', ['/c1.png', '/c2.png', '/c3.png', '/c4.png', '/c5.png'])">
+                                    onclick="openCertificateViewer('Credly(NET ACAD)', ['./c1.png', './c2.png', './c3.png', './c4.png', './c5.png'])">
                                     <div
                                         class="absolute top-0 right-0 w-8 h-8 bg-sys-cyan/5 rotate-45 translate-x-4 -translate-y-4 transition-transform group-hover:bg-sys-cyan/10">
                                     </div>
@@ -702,7 +714,7 @@
                 </section>
 
                 <!-- SECTION: CONTACT -->
-                <section data-id="contact" class="window absolute inset-12">
+                <section data-id="contact" class="window absolute inset-4 sm:inset-8 md:inset-12">
                     <div class="window-header">
                         <div class="flex gap-2">
                             <div class="w-2.5 h-2.5 rounded-full border border-sys-cyan/40 bg-sys-cyan/20"></div>
