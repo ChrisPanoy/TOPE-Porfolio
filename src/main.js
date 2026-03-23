@@ -190,15 +190,24 @@ const initListeners = () => {
         btn.addEventListener('click', () => switchSection(btn.dataset.target));
     });
 
-    // Formspree Integration
-const FORMSPREE_ID = "mkoqlkza";
+// FORMSPREE CONFIGURATION
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/mkoqlkza"; // Correct Formspree ID from user
 
 // CONTACT FORM HANDLING
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const status = document.getElementById('form-status');
+        
+        // Dynamic status display
+        let status = document.getElementById('form-status');
+        if (!status) {
+            status = document.createElement('div');
+            status.id = 'form-status';
+            status.className = 'mono text-[9px] mt-4 uppercase tracking-widest';
+            contactForm.appendChild(status);
+        }
+
         const btn = contactForm.querySelector('button');
         const originalBtnText = btn.innerHTML;
 
@@ -211,28 +220,29 @@ if (contactForm) {
         const formData = new FormData(contactForm);
 
         try {
-            const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+            const response = await fetch(FORMSPREE_ENDPOINT, {
                 method: 'POST',
                 body: formData,
-                headers: { 'Accept': 'application/json' }
+                headers: {
+                    'Accept': 'application/json'
+                }
             });
 
             if (response.ok) {
                 // Persistent Stats
-                Storage.addMessage({
-                    name: formData.get('name'),
-                    email: formData.get('email'),
-                    message: formData.get('message')
-                });
+                const data = Object.fromEntries(formData.entries());
+                Storage.addMessage(data);
 
                 status.innerText = "UPLINK_SUCCESSFUL // SIGNAL_SENT";
                 status.style.color = "#00f2ff";
                 contactForm.reset();
             } else {
-                throw new Error("UPLINK_FAILURE");
+                const result = await response.json();
+                status.innerText = result.errors ? result.errors.map(error => error.message).join(", ") : "ERROR // UPLINK_FAILED";
+                status.style.color = "#ff0066";
             }
         } catch (err) {
-            status.innerText = "ERROR // UPLINK_FAILED";
+            status.innerText = "ERROR // CONNECTION_LOST";
             status.style.color = "#ff0066";
         } finally {
             setTimeout(() => {
