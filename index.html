@@ -11,18 +11,38 @@
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;900&display=swap"
         rel="stylesheet">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-
+    <style>
+        #boot-loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            color: #00f2ff;
+        }
+    </style>
 </head>
 
 <body class="bg-sys-bg text-slate-300">
-
+    <!-- Boot Screen -->
+    <div id="boot-loader">
+        <div class="text-xs mb-4">INITIALIZING_SYSTEM...</div>
+        <div class="w-48 h-1 bg-white/10 rounded-full overflow-hidden">
+            <div id="boot-progress" class="h-full bg-sys-cyan w-0 transition-all duration-300"></div>
+        </div>
+        <div id="boot-status" class="mt-4 text-[10px] opacity-50 uppercase tracking-widest">Loading_Core_Modules</div>
+    </div>
 
     <!-- UI Overlays -->
     <div class="noise"></div>
     <div class="scanlines"></div>
 
     <!-- Main Desktop Layout -->
-    <div id="desktop" class="flex h-screen">
+    <div id="desktop" class="flex h-screen opacity-0 transition-opacity duration-1000">
 
         <!-- Primary Navigation (Updated to Top Header) -->
         <main class="flex-1 flex flex-col relative overflow-hidden">
@@ -85,9 +105,10 @@
                     </div>
                     <div class="h-8 w-px bg-white/5 hidden sm:block"></div>
                     <a href="mailto:admin@sys.local" class="system-badge scale-90 md:scale-100">Christopher_Panoy</a>
-                    <button
-                        class="w-10 h-10 rounded-full border border-white/5 flex items-center justify-center text-slate-600 hover:text-white transition-colors">
+                    <button id="admin-login-trigger"
+                        class="w-10 h-10 rounded-full border border-white/5 flex items-center justify-center text-slate-600 hover:text-white transition-colors relative group">
                         <ion-icon name="settings-outline"></ion-icon>
+                        <span class="absolute -bottom-10 right-0 bg-sys-cyan text-black px-2 py-1 text-[8px] font-black rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">ADMIN_BYPASS</span>
                     </button>
                 </div>
             </header>
@@ -155,7 +176,7 @@
 
                                 <div class="relative overflow-hidden border border-white/5 bg-sys-bg">
                                     <div class="scan-line-anim"></div>
-                                    <img src="./tope.jpg"
+                                    <img src="/tope.jpg"
                                         class="w-full grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-1000 scale-105 group-hover:scale-100" />
                                     <!-- Scan Overlay -->
                                     <div
@@ -280,7 +301,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
 
                                 <div class="flex gap-8 pt-4 stagger-item">
                                     <div class="flex flex-col">
@@ -359,7 +380,7 @@
                                     <div
                                         class="absolute top-0 left-0 w-4 h-4 border-t border-l border-sys-cyan/50 z-10 transition-all group-hover:w-8 group-hover:h-8">
                                     </div>
-                                    <img src="./Tope2.png"
+                                    <img src="/Tope2.png"
                                         class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
                                 </div>
                                 <h4
@@ -396,7 +417,7 @@
                                     <div
                                         class="absolute top-0 left-0 w-4 h-4 border-t border-l border-sys-cyan/50 z-10 transition-all group-hover:w-8 group-hover:h-8">
                                     </div>
-                                    <img src="./tope3.png"
+                                    <img src="/tope3.png"
                                         class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
                                 </div>
                                 <h4
@@ -431,7 +452,7 @@
                                     <div
                                         class="absolute top-0 left-0 w-4 h-4 border-t border-l border-sys-cyan/50 z-10 transition-all group-hover:w-8 group-hover:h-8">
                                     </div>
-                                    <img src="./tope4.png"
+                                    <img src="/tope4.png"
                                         class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
                                     <div
                                         class="absolute inset-0 bg-sys-cyan/5 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -469,7 +490,7 @@
                                     <div
                                         class="absolute top-0 left-0 w-4 h-4 border-t border-l border-sys-cyan/50 z-10 transition-all group-hover:w-8 group-hover:h-8">
                                     </div>
-                                    <img src="./tope5.png"
+                                    <img src="/tope5.png"
                                         class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
                                     <div
                                         class="absolute inset-0 bg-sys-cyan/5 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -506,7 +527,7 @@
                                     <div
                                         class="absolute top-0 left-0 w-4 h-4 border-t border-l border-sys-cyan/50 z-10 transition-all group-hover:w-8 group-hover:h-8">
                                     </div>
-                                    <img src="./tope7.png"
+                                    <img src="/tope7.png"
                                         class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
                                     <div
                                         class="absolute inset-0 bg-sys-cyan/5 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -564,7 +585,7 @@
                             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                                 <!-- Capstone Project -->
                                 <div class="group border border-white/5 bg-white/[0.01] p-6 flex flex-col items-center justify-center transition-all hover:border-sys-cyan/30 hover:bg-sys-cyan/[0.02] relative overflow-hidden stagger-item cursor-pointer"
-                                    onclick="openCertificateViewer('Capstone Project', ['./cap1.jpg', './cap2.jpg', './cap3.jpg'])">
+                                    onclick="openCertificateViewer('Capstone Project', ['/cap1.jpg', '/cap2.jpg', '/cap3.jpg'])">
                                     <div
                                         class="absolute top-0 right-0 w-8 h-8 bg-sys-cyan/5 rotate-45 translate-x-4 -translate-y-4 transition-transform group-hover:bg-sys-cyan/10">
                                     </div>
@@ -587,7 +608,7 @@
 
                                 <!-- Cloudstaff -->
                                 <div class="group border border-white/5 bg-white/[0.01] p-6 flex flex-col items-center justify-center transition-all hover:border-sys-cyan/30 hover:bg-sys-cyan/[0.02] relative overflow-hidden stagger-item cursor-pointer"
-                                    onclick="openCertificateViewer('Cloudstaff', ['./cl1.jpg', './cl2.jpg'])">
+                                    onclick="openCertificateViewer('Cloudstaff', ['/cl1.jpg', '/cl2.jpg'])">
                                     <div
                                         class="absolute top-0 right-0 w-8 h-8 bg-sys-cyan/5 rotate-45 translate-x-4 -translate-y-4 transition-transform group-hover:bg-sys-cyan/10">
                                     </div>
@@ -609,7 +630,7 @@
 
                                 <!-- Seminar -->
                                 <div class="group border border-white/5 bg-white/[0.01] p-6 flex flex-col items-center justify-center transition-all hover:border-sys-cyan/30 hover:bg-sys-cyan/[0.02] relative overflow-hidden stagger-item cursor-pointer"
-                                    onclick="openCertificateViewer('Seminar', ['./src1.jpg', './src2.jpg'])">
+                                    onclick="openCertificateViewer('Seminar', ['/src1.jpg', '/src2.jpg'])">
                                     <div
                                         class="absolute top-0 right-0 w-8 h-8 bg-sys-cyan/5 rotate-45 translate-x-4 -translate-y-4 transition-transform group-hover:bg-sys-cyan/10">
                                     </div>
@@ -631,7 +652,7 @@
 
                                 <!-- PSITE Central Luzon -->
                                 <div class="group border border-white/5 bg-white/[0.01] p-6 flex flex-col items-center justify-center transition-all hover:border-sys-cyan/30 hover:bg-sys-cyan/[0.02] relative overflow-hidden stagger-item cursor-pointer"
-                                    onclick="openCertificateViewer('PSITE Central Luzon', ['./psite1.jpg'])">
+                                    onclick="openCertificateViewer('PSITE Central Luzon', ['/psite1.jpg'])">
                                     <div
                                         class="absolute top-0 right-0 w-8 h-8 bg-sys-cyan/5 rotate-45 translate-x-4 -translate-y-4 transition-transform group-hover:bg-sys-cyan/10">
                                     </div>
@@ -654,7 +675,7 @@
 
                                 <!-- Credly(NET ACAD) -->
                                 <div class="group border border-white/5 bg-white/[0.01] p-6 flex flex-col items-center justify-center transition-all hover:border-sys-cyan/30 hover:bg-sys-cyan/[0.02] relative overflow-hidden stagger-item cursor-pointer"
-                                    onclick="openCertificateViewer('Credly(NET ACAD)', ['./c1.png', './c2.png', './c3.png', './c4.png', './c5.png'])">
+                                    onclick="openCertificateViewer('Credly(NET ACAD)', ['/c1.png', '/c2.png', '/c3.png', '/c4.png', '/c5.png'])">
                                     <div
                                         class="absolute top-0 right-0 w-8 h-8 bg-sys-cyan/5 rotate-45 translate-x-4 -translate-y-4 transition-transform group-hover:bg-sys-cyan/10">
                                     </div>
@@ -703,13 +724,10 @@
                             </div>
 
                             <div class="grid md:grid-cols-2 gap-12">
-                                <!-- LEFT: Direct Channels -->
+                                <!-- LEFT: Direct Channels + Visit Stats -->
                                 <div class="space-y-8 stagger-item">
                                     <div
                                         class="group border border-white/5 bg-white/[0.01] p-8 hover:border-sys-cyan/30 transition-all relative overflow-hidden">
-                                        <div
-                                            class="absolute top-0 right-0 w-12 h-12 bg-sys-cyan/5 rotate-45 translate-x-6 -translate-y-6">
-                                        </div>
                                         <div class="mono text-[8px] text-slate-600 mb-6 uppercase tracking-[0.3em]">
                                             Channel_01 // SECURE_MAIL</div>
                                         <a href="mailto:christophermadeja7@gmail.com"
@@ -720,52 +738,50 @@
                                         </div>
                                     </div>
 
-                                    <div
-                                        class="group border border-white/5 bg-white/[0.01] p-8 hover:border-sys-cyan/30 transition-all relative overflow-hidden">
-                                        <div
-                                            class="absolute top-0 right-0 w-12 h-12 bg-sys-cyan/5 rotate-45 translate-x-6 -translate-y-6">
-                                        </div>
-                                        <div class="mono text-[8px] text-slate-600 mb-6 uppercase tracking-[0.3em]">
-                                            Channel_02 // VOIP_SIGNAL</div>
-                                        <span class="text-2xl font-black text-white mono">+63 9309971418</span>
-                                        <div class="mt-4 flex items-center gap-2">
-                                            <span class="w-2 h-2 rounded-full bg-slate-800"></span>
-                                            <span class="mono text-[8px] text-slate-600 uppercase">Cellphone_Line</span>
+                                    <!-- VISITOR LOG SUMMARY -->
+                                    <div class="border border-white/5 bg-black/40 p-8 relative overflow-hidden">
+                                        <div class="mono text-[8px] text-slate-600 mb-6 uppercase tracking-[0.3em]">System_Traffic_Analysis</div>
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <div id="stat-visits" class="text-3xl font-black text-white">---</div>
+                                                <div class="mono text-[7px] text-slate-600 uppercase">Total_Uplinks</div>
+                                            </div>
+                                            <div>
+                                                <div id="stat-messages" class="text-3xl font-black text-white">---</div>
+                                                <div class="mono text-[7px] text-slate-600 uppercase">Comm_Packets</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- RIGHT: Matrix Linkages -->
-                                <div class="grid grid-cols-2 gap-6 stagger-item">
-                                    <a href="https://github.com/chrispanoy" target="_blank"
-                                        class="group border border-white/5 bg-white/[0.01] p-6 flex flex-col items-center justify-center hover:border-sys-cyan/40 hover:bg-sys-cyan/[0.02] transition-all">
-                                        <ion-icon name="logo-github"
-                                            class="text-3xl text-slate-700 group-hover:text-sys-cyan transition-colors mb-4"></ion-icon>
-                                        <span
-                                            class="mono text-[9px] text-slate-500 group-hover:text-white uppercase tracking-[0.2em] text-center">GITHUB</span>
-                                    </a>
-                                    <a href="https://www.instagram.com/tantadoooooo?igsh=aXpqc2p0ZXczMjU4"
-                                        target="_blank"
-                                        class="group border border-white/5 bg-white/[0.01] p-6 flex flex-col items-center justify-center hover:border-sys-cyan/40 hover:bg-sys-cyan/[0.02] transition-all">
-                                        <ion-icon name="logo-instagram"
-                                            class="text-3xl text-slate-700 group-hover:text-sys-cyan transition-colors mb-4"></ion-icon>
-                                        <span
-                                            class="mono text-[9px] text-slate-500 group-hover:text-white uppercase tracking-[0.2em] text-center">INSTAGRAM</span>
-                                    </a>
-                                    <a href="https://web.facebook.com/christopher.madeja.13" target="_blank"
-                                        class="group border border-white/5 bg-white/[0.01] p-6 flex flex-col items-center justify-center hover:border-sys-cyan/40 hover:bg-sys-cyan/[0.02] transition-all">
-                                        <ion-icon name="logo-facebook"
-                                            class="text-3xl text-slate-700 group-hover:text-sys-cyan transition-colors mb-4"></ion-icon>
-                                        <span
-                                            class="mono text-[9px] text-slate-500 group-hover:text-white uppercase tracking-[0.2em] text-center">FACEBOOK</span>
-                                    </a>
-                                    <a href="https://t.me/chrisystematixx" target="_blank"
-                                        class="group border border-white/5 bg-white/[0.01] p-6 flex flex-col items-center justify-center hover:border-sys-cyan/40 hover:bg-sys-cyan/[0.02] transition-all">
-                                        <ion-icon name="paper-plane-outline"
-                                            class="text-3xl text-slate-700 group-hover:text-sys-cyan transition-colors mb-4"></ion-icon>
-                                        <span
-                                            class="mono text-[9px] text-slate-500 group-hover:text-white uppercase tracking-[0.2em] text-center">TELEGRAM</span>
-                                    </a>
+                                <!-- RIGHT: Encryption Uplink Form -->
+                                <div class="stagger-item">
+                                    <form id="contact-form" class="space-y-4">
+                                        <div class="relative">
+                                            <input type="text" id="form-name" required
+                                                class="w-full bg-white/[0.02] border border-white/10 px-4 py-3 mono text-xs text-white focus:outline-none focus:border-sys-cyan/50 transition-colors peer"
+                                                placeholder=" ">
+                                            <label class="absolute left-4 top-3 mono text-[8px] text-slate-500 uppercase pointer-events-none transition-all peer-focus:-top-2 peer-focus:left-2 peer-focus:text-sys-cyan peer-focus:bg-sys-bg peer-focus:px-2 peer-placeholder-shown:top-3 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:text-sys-cyan peer-[:not(:placeholder-shown)]:bg-sys-bg peer-[:not(:placeholder-shown)]:px-2">Ident_Name</label>
+                                        </div>
+                                        <div class="relative">
+                                            <input type="email" id="form-email" required
+                                                class="w-full bg-white/[0.02] border border-white/10 px-4 py-3 mono text-xs text-white focus:outline-none focus:border-sys-cyan/50 transition-colors peer"
+                                                placeholder=" ">
+                                            <label class="absolute left-4 top-3 mono text-[8px] text-slate-500 uppercase pointer-events-none transition-all peer-focus:-top-2 peer-focus:left-2 peer-focus:text-sys-cyan peer-focus:bg-sys-bg peer-focus:px-2 peer-placeholder-shown:top-3 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:text-sys-cyan peer-[:not(:placeholder-shown)]:bg-sys-bg peer-[:not(:placeholder-shown)]:px-2">Return_Address</label>
+                                        </div>
+                                        <div class="relative">
+                                            <textarea id="form-message" required rows="4"
+                                                class="w-full bg-white/[0.02] border border-white/10 px-4 py-3 mono text-xs text-white focus:outline-none focus:border-sys-cyan/50 transition-colors peer resize-none"
+                                                placeholder=" "></textarea>
+                                            <label class="absolute left-4 top-3 mono text-[8px] text-slate-500 uppercase pointer-events-none transition-all peer-focus:-top-2 peer-focus:left-2 peer-focus:text-sys-cyan peer-focus:bg-sys-bg peer-focus:px-2 peer-placeholder-shown:top-3 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:left-2 peer-[:not(:placeholder-shown)]:text-sys-cyan peer-[:not(:placeholder-shown)]:bg-sys-bg peer-[:not(:placeholder-shown)]:px-2">Payload_Data</label>
+                                        </div>
+                                        <button type="submit"
+                                            class="w-full bg-sys-cyan text-black py-4 font-black mono text-[10px] uppercase tracking-[0.3em] overflow-hidden group relative">
+                                            <span class="relative z-10">Initiate_Uplink</span>
+                                            <div class="absolute inset-0 bg-white translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 opacity-20"></div>
+                                        </button>
+                                    </form>
+                                    <div id="form-status" class="mt-4 mono text-[8px] text-center uppercase tracking-widest hidden"></div>
                                 </div>
                             </div>
                         </div>
@@ -778,8 +794,8 @@
             <footer
                 class="h-12 border-t border-white/5 bg-black/60 px-8 flex items-center justify-between text-[8px] mono text-slate-600">
                 <div class="flex gap-8">
-                    <span>RUNTIME: 100%_ACTIVE</span>
-                    <span>MEMORY: 128TB_FREE</span>
+                    <span>RUNTIME: <span id="runtime-status">100%_ACTIVE</span></span>
+                    <span>SESSION_UPLINKS: <span id="visit-counter">0000</span></span>
                     <span>TEMP: 32.4°C</span>
                 </div>
                 <div class="flex gap-6 uppercase tracking-widest font-bold">
@@ -823,7 +839,31 @@
         </div>
     </div>
 
-    <script type="module" src="./src/main.js"></script>
+    <!-- Module: Admin Terminal Overlay -->
+    <div id="admin-terminal" class="fixed inset-0 z-[2000] opacity-0 pointer-events-none transition-all duration-500 flex items-center justify-center p-6 backdrop-blur-md">
+        <div class="absolute inset-0 bg-black/90" onclick="closeAdminTerminal()"></div>
+        <div class="window w-full max-w-2xl h-[400px] relative z-10 active flex flex-col border-sys-pink">
+            <div class="window-header !bg-sys-pink/10 border-sys-pink/20">
+                <div class="flex gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-red-500/50 cursor-pointer" onclick="closeAdminTerminal()"></div>
+                </div>
+                <span class="mono text-[9px] text-sys-pink uppercase tracking-[0.3em]">SECURE_BYPASS_TERMINAL.SH</span>
+                <ion-icon name="terminal-outline" class="text-sys-pink"></ion-icon>
+            </div>
+            <div class="window-content bg-black/40 font-mono text-xs p-6 overflow-hidden flex flex-col">
+                <div id="terminal-output" class="flex-1 overflow-y-auto space-y-2 mb-4 scrollbar-hide">
+                    <div class="text-sys-pink">[RESTRICTED_ACCESS] // UNAUTHORIZED_ENTRY_DETECTED</div>
+                    <div class="text-slate-500">System is requesting authentication...</div>
+                </div>
+                <div class="flex items-center gap-2 border-t border-white/5 pt-4">
+                    <span class="text-sys-pink">></span>
+                    <input type="password" id="terminal-input" class="bg-transparent border-none outline-none text-sys-cyan w-full" placeholder="Enter_Access_Key..." autofocus>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
 </body>
 
 </html>

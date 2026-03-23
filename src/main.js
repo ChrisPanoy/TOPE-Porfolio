@@ -2,10 +2,54 @@ import './style.css'
 
 /**
  * CHRISYSTEMATIXX_OS CORE LOGIC
- * Pure Vanilla JavaScript Module
+ * Production-Ready Static Architecture
  */
 
-// 1. BOOT SEQUENCE
+// 1. DATA PERSISTENCE LAYER (LocalStorage)
+const Storage = {
+    init() {
+        if (!localStorage.getItem('sys_data')) {
+            localStorage.setItem('sys_data', JSON.stringify({
+                visits: 0,
+                messages: [],
+                isAdmin: false,
+                lastBoot: new Date().toISOString()
+            }));
+        }
+        this.trackVisit();
+        this.updateHUD();
+    },
+    getData() {
+        return JSON.parse(localStorage.getItem('sys_data'));
+    },
+    saveData(data) {
+        localStorage.setItem('sys_data', JSON.stringify(data));
+        this.updateHUD();
+    },
+    trackVisit() {
+        const data = this.getData();
+        data.visits += 1;
+        data.lastBoot = new Date().toISOString();
+        this.saveData(data);
+    },
+    addMessage(msg) {
+        const data = this.getData();
+        data.messages.push({ ...msg, id: Date.now(), timestamp: new Date().toISOString() });
+        this.saveData(data);
+    },
+    updateHUD() {
+        const data = this.getData();
+        const visitEl = document.getElementById('visit-counter');
+        const statVisits = document.getElementById('stat-visits');
+        const statMsgs = document.getElementById('stat-messages');
+
+        if (visitEl) visitEl.textContent = String(data.visits).padStart(4, '0');
+        if (statVisits) statVisits.textContent = data.visits;
+        if (statMsgs) statMsgs.textContent = data.messages.length;
+    }
+};
+
+// 2. BOOT SEQUENCE
 const runBootLoader = async () => {
     const progress = document.getElementById('boot-progress');
     const status = document.getElementById('boot-status');
@@ -14,30 +58,28 @@ const runBootLoader = async () => {
 
     const steps = [
         { progress: 20, text: 'LOADING_KERNEL_V4.2' },
-        { progress: 45, text: 'MOUNTING_DEVICES' },
+        { progress: 45, text: 'MOUNTING_LOCAL_STORAGE' },
         { progress: 70, text: 'ESTABLISHING_SECURE_LINK' },
         { progress: 90, text: 'LOAD_UI_MODULES' },
         { progress: 100, text: 'SYSTEM_STABLE' }
     ];
 
     for (const step of steps) {
-        await new Promise(r => setTimeout(r, 600 + Math.random() * 400));
+        await new Promise(r => setTimeout(r, 400 + Math.random() * 300));
         progress.style.width = `${step.progress}%`;
         status.textContent = step.text;
     }
 
-    await new Promise(r => setTimeout(r, 500));
     loader.style.opacity = '0';
     loader.style.pointerEvents = 'none';
-
     desktop.classList.remove('opacity-0');
     desktop.classList.add('opacity-100');
 
-    // Trigger initial reveal
+    // Reveal animation for current section
     switchSection('home');
 };
 
-// 2. WINDOW / SECTION SWITCHING
+// 3. WINDOW / SECTION SWITCHING
 const switchSection = (sectionId) => {
     const sections = document.querySelectorAll('#workspace section');
     const navBtns = document.querySelectorAll('.nav-btn');
@@ -56,85 +98,161 @@ const switchSection = (sectionId) => {
         }
     });
 
-    // Update Nav active state
     navBtns.forEach(btn => {
+        const icon = btn.querySelector('ion-icon');
         if (btn.dataset.section === sectionId) {
-            btn.querySelector('ion-icon').classList.replace('text-slate-600', 'text-sys-cyan');
+            icon.classList.add('text-sys-cyan');
+            icon.classList.remove('text-slate-600');
         } else {
-            btn.querySelector('ion-icon').classList.replace('text-sys-cyan', 'text-slate-600');
+            icon.classList.remove('text-sys-cyan');
+            icon.classList.add('text-slate-600');
         }
     });
 };
 
-// 3. DIGITAL HUD CLOCK
-const startClock = () => {
-    const clockEl = document.getElementById('digital-clock');
-    setInterval(() => {
-        const now = new Date();
-        // 12-hour format with AM/PM
-        clockEl.textContent = now.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true
-        }).toUpperCase();
-    }, 1000);
+// 4. ADMIN TERMINAL MODULE
+const adminTerminal = {
+    isOpen: false,
+    el: null,
+    output: null,
+    input: null,
+
+    init() {
+        this.el = document.getElementById('admin-terminal');
+        this.output = document.getElementById('terminal-output');
+        this.input = document.getElementById('terminal-input');
+
+        if (this.input) {
+            this.input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.handleInput(this.input.value);
+                    this.input.value = '';
+                }
+            });
+        }
+    },
+
+    open() {
+        this.isOpen = true;
+        this.el.classList.remove('opacity-0', 'pointer-events-none');
+        this.input.focus();
+        this.log('System is requesting authentication...', 'slate-500');
+    },
+
+    close() {
+        this.isOpen = false;
+        this.el.classList.add('opacity-0', 'pointer-events-none');
+    },
+
+    log(text, color = 'sys-cyan') {
+        const div = document.createElement('div');
+        div.className = `text-${color}`;
+        div.textContent = text;
+        this.output.appendChild(div);
+        this.output.scrollTop = this.output.scrollHeight;
+    },
+
+    handleInput(val) {
+        this.log(`> ${val}`, 'white');
+        const cmd = val.toLowerCase().trim();
+
+        if (cmd === 'admin@2024' || cmd === 'bypass' || cmd === 'root') {
+            this.log('AUTHENTICATION_SUCCESSFUL', 'green-400');
+            this.log('GRANTING_ADMIN_PRIVILEGES...', 'green-400');
+            setTimeout(() => {
+                const status = document.getElementById('runtime-status');
+                if (status) {
+                    status.textContent = 'ADMIN_MODE_ACTIVE';
+                    status.classList.add('text-sys-pink');
+                }
+                this.log('WELCOME_OPERATOR: CHRIS', 'sys-pink');
+                setTimeout(() => this.close(), 1500);
+            }, 1000);
+        } else if (cmd === 'clear') {
+            this.output.innerHTML = '';
+        } else if (cmd === 'exit') {
+            this.close();
+        } else {
+            this.log('ACCESS_DENIED: INVALID_CREDENTIALS', 'red-500');
+        }
+    }
 };
 
-// 4. EVENT LISTENERS
+// 5. EVENT LISTENERS
 const initListeners = () => {
     // Nav Buttons
     document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const target = btn.dataset.section;
-            switchSection(target);
-        });
+        btn.addEventListener('click', () => switchSection(btn.dataset.section));
     });
 
-    // Internal Target Buttons (Links within windows)
+    // Internal Target Buttons
     document.querySelectorAll('[data-target]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const target = btn.dataset.target;
-            switchSection(target);
-        });
+        btn.addEventListener('click', () => switchSection(btn.dataset.target));
     });
-};
 
-// 5. MOTION & STAGGER INIT
-const initMotion = () => {
-    document.querySelectorAll('.window').forEach(win => {
-        win.querySelectorAll('.stagger-item').forEach((item, index) => {
-            // High-performance delay allocation
-            item.style.transitionDelay = `${index * 80}ms`;
+    // Contact Form Uplink
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = contactForm.querySelector('button');
+            const status = document.getElementById('form-status');
+
+            const payload = {
+                name: document.getElementById('form-name').value,
+                email: document.getElementById('form-email').value,
+                message: document.getElementById('form-message').value
+            };
+
+            btn.disabled = true;
+            btn.textContent = 'ENCRYPTING_PACKET...';
+
+            setTimeout(() => {
+                Storage.addMessage(payload);
+                btn.textContent = 'UPLINK_SUCCESSFUL';
+                status.textContent = 'DATA_RECEIVED_IN_LOCAL_VAULT';
+                status.classList.remove('hidden', 'text-red-500');
+                status.classList.add('text-sys-cyan');
+                contactForm.reset();
+
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.textContent = 'Initiate_Uplink';
+                    status.classList.add('hidden');
+                }, 3000);
+            }, 1500);
         });
-    });
+    }
+
+    // Admin Trigger
+    const adminTrigger = document.getElementById('admin-login-trigger');
+    if (adminTrigger) {
+        adminTrigger.addEventListener('click', () => adminTerminal.open());
+    }
 };
 
 // 6. ASSET VIEWER MODULE
 window.openCertificateViewer = (title, images) => {
     const viewer = document.getElementById('cert-viewer');
+    const content = document.getElementById('cert-viewer-content');
     const titleEl = document.getElementById('cert-viewer-title');
-    const contentEl = document.getElementById('cert-viewer-content');
     const countEl = document.getElementById('cert-viewer-count');
 
     titleEl.textContent = `ASSET_VAULT // ${title.toUpperCase()}.DAT`;
     countEl.textContent = `FILES_LOGGED: ${String(images.length).padStart(2, '0')}`;
 
-    // Inject and setup animations
-    contentEl.innerHTML = images.map((src, i) => `
-        <div class="group relative border border-white/5 bg-black/40 overflow-hidden flex flex-col items-center justify-center p-4 hover:border-sys-cyan/30 transition-all opacity-0 translate-y-4" style="transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); transition-delay: ${i * 100}ms">
+    content.innerHTML = images.map((src, i) => `
+        <div class="group relative border border-white/5 bg-black/40 p-4 transition-all opacity-0 translate-y-4" 
+             style="transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); transition-delay: ${i * 100}ms">
             <div class="absolute top-2 left-2 mono text-[8px] text-slate-700">PTR_${i + 1}</div>
             <img src="${src}" class="max-w-full max-h-[50vh] object-contain grayscale hover:grayscale-0 transition-all duration-700 hover:scale-110" />
-            <div class="absolute inset-0 bg-sys-cyan/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
             <div class="mt-4 mono text-[6px] text-slate-600 uppercase">Buffer_Asset_${i + 1}</div>
         </div>
     `).join('');
 
     viewer.classList.remove('opacity-0', 'pointer-events-none');
-
-    // Trigger reveal
     setTimeout(() => {
-        contentEl.querySelectorAll('div').forEach(item => {
+        content.querySelectorAll('div').forEach(item => {
             item.classList.remove('opacity-0', 'translate-y-4');
             item.classList.add('opacity-100', 'translate-y-0');
         });
@@ -142,18 +260,33 @@ window.openCertificateViewer = (title, images) => {
 };
 
 window.closeCertViewer = () => {
-    const viewer = document.getElementById('cert-viewer');
-    viewer.classList.add('opacity-0', 'pointer-events-none');
+    document.getElementById('cert-viewer').classList.add('opacity-0', 'pointer-events-none');
 };
 
-// INITIALIZE SYSTEM
+window.closeAdminTerminal = () => adminTerminal.close();
+
+// 7. INITIALIZE SYSTEM
 document.addEventListener('DOMContentLoaded', () => {
-    // Skip boot-loader and go straight to Home
-    if (typeof switchSection === 'function') {
-        switchSection('home');
-    }
-    
-    startClock();
+    Storage.init();
+    adminTerminal.init();
+    runBootLoader();
     initListeners();
-    initMotion();
+
+    // HUD Clock
+    const clockEl = document.getElementById('digital-clock');
+    if (clockEl) {
+        setInterval(() => {
+            const now = new Date();
+            clockEl.textContent = now.toLocaleTimeString('en-US', {
+                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
+            }).toUpperCase();
+        }, 1000);
+    }
+
+    // Stagger Items Delay Allocation
+    document.querySelectorAll('.window').forEach(win => {
+        win.querySelectorAll('.stagger-item').forEach((item, i) => {
+            item.style.transitionDelay = `${i * 80}ms`;
+        });
+    });
 });
