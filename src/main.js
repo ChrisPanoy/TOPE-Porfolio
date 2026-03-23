@@ -190,39 +190,59 @@ const initListeners = () => {
         btn.addEventListener('click', () => switchSection(btn.dataset.target));
     });
 
-    // Contact Form Uplink
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = contactForm.querySelector('button');
-            const status = document.getElementById('form-status');
+    // Formspree Integration
+const FORMSPREE_ID = "mkoqlkza";
 
-            const payload = {
-                name: document.getElementById('form-name').value,
-                email: document.getElementById('form-email').value,
-                message: document.getElementById('form-message').value
-            };
+// CONTACT FORM HANDLING
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const status = document.getElementById('form-status');
+        const btn = contactForm.querySelector('button');
+        const originalBtnText = btn.innerHTML;
 
-            btn.disabled = true;
-            btn.textContent = 'ENCRYPTING_PACKET...';
+        // UI Feedback: Simulating Encryption/Uplink
+        btn.disabled = true;
+        btn.innerHTML = '<span class="relative z-10">ENCRYPTING_DATA...</span>';
+        status.classList.remove('hidden');
+        status.innerText = "MOUNTING_SECURE_UPLINK...";
 
-            setTimeout(() => {
-                Storage.addMessage(payload);
-                btn.textContent = 'UPLINK_SUCCESSFUL';
-                status.textContent = 'DATA_RECEIVED_IN_LOCAL_VAULT';
-                status.classList.remove('hidden', 'text-red-500');
-                status.classList.add('text-sys-cyan');
+        const formData = new FormData(contactForm);
+
+        try {
+            const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (response.ok) {
+                // Persistent Stats
+                Storage.addMessage({
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    message: formData.get('message')
+                });
+
+                status.innerText = "UPLINK_SUCCESSFUL // SIGNAL_SENT";
+                status.style.color = "#00f2ff";
                 contactForm.reset();
-
-                setTimeout(() => {
-                    btn.disabled = false;
-                    btn.textContent = 'Initiate_Uplink';
-                    status.classList.add('hidden');
-                }, 3000);
-            }, 1500);
-        });
-    }
+            } else {
+                throw new Error("UPLINK_FAILURE");
+            }
+        } catch (err) {
+            status.innerText = "ERROR // UPLINK_FAILED";
+            status.style.color = "#ff0066";
+        } finally {
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = originalBtnText;
+                status.classList.add('hidden');
+            }, 3000);
+        }
+    });
+}
 
     // Admin Trigger
     const adminTrigger = document.getElementById('admin-login-trigger');
